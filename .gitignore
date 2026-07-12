@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Recon material from the original site (not redistributed)
+_reference/
+
+# Local tool state
+.omc/
+.claude/

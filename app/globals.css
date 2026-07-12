@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-red: #f91814;
+  --color-mustard: #ffd750;
+  --color-mustard-dark: #f4a804;
+  --color-beige: #f5e3cd;
+  --color-black: #1b1b1b;
+  --color-white: #ffffff;
+}
+
+@theme inline {
+  --font-modak: var(--font-modak);
+  --font-mouse-memoirs: var(--font-mouse-memoirs);
+}
+
+:root {
+  --red: #f91814;
+  --mustard: #ffd750;
+  --mustard-dark: #f4a804;
+  --beige: #f5e3cd;
+  --black: #1b1b1b;
+  --white: #fff;
+}
+
+@utility text-stroke {
+  -webkit-text-stroke: 2.5vw var(--white);
+  paint-order: stroke fill;
+}
+
+@utility text-stroke-small {
+  -webkit-text-stroke: 5px var(--white);
+  paint-order: stroke fill;
+}
+
+@utility text-stroke-180 {
+  -webkit-text-stroke: 1vw var(--white);
+  paint-order: stroke fill;
+}
+
+@utility text-stroke-180-mustard {
+  -webkit-text-stroke: 1vw #f4a8044d;
+  paint-order: stroke fill;
+}
+
+@utility text-stroke-180-menu {
+  -webkit-text-stroke: 1vw var(--white);
+  paint-order: stroke fill;
+}
+
+body {
+  background: var(--beige);
+  color: var(--black);
+  font-family: var(--font-mouse-memoirs);
+  -webkit-user-select: none;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}

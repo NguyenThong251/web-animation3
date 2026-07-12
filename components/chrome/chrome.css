@@ -1,0 +1,45 @@
+/* Custom classes used by the shared chrome (navbar/preloader/footer/transition).
+   Copied verbatim from the original compiled CSS (0ovftnp3y9gzb.css).
+   Imported after globals.css so these override utility classes exactly like
+   the original stylesheet order does. */
+
+.self {
+  padding: 8vw 2.5vw;
+}
+
+.heading600 {
+  font-family: var(--font-modak);
+  font-size: 35vw;
+}
+
+.heading180 {
+  text-transform: uppercase;
+  font-size: 9vw;
+  font-family: var(--font-mouse-memoirs);
+}
+
+.text40 {
+  font-size: 1.8vw;
+}
+
+.text60 {
+  font-size: 2.8vw;
+}
+
+@media (max-width: 1025px) {
+  .self {
+    padding: 16vw 4vw;
+  }
+
+  .text40 {
+    font-size: 5vw;
+  }
+
+  .text60 {
+    font-size: 6.5vw;
+  }
+
+  .heading180 {
+    font-size: 14vw;
+  }
+}

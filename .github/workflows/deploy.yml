@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /web-animation3
+
+      # Hardcoded absolute asset paths (/img, /img-webp, /burgers) need the
+      # basePath prefix — Next.js only prefixes routes and _next assets.
+      - name: Prefix absolute asset paths with basePath
+        run: |
+          find out -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.txt' -o -name '*.webmanifest' \) -print0 \
+            | xargs -0 sed -i 's|"/img/|"/web-animation3/img/|g; s|"/img-webp/|"/web-animation3/img-webp/|g; s|"/burgers/|"/web-animation3/burgers/|g; s|(/img/|(/web-animation3/img/|g; s|(/img-webp/|(/web-animation3/img-webp/|g'
+
+      # Next 16 requests segment-cache files as "__next.<seg>.__PAGE__.txt"
+      # but exports them as "__next.<seg>/__PAGE__.txt" — copy to flattened
+      # names so prefetch works on a plain static host (keeps SPA transitions).
+      - name: Flatten RSC prefetch filenames for static hosting
+        run: |
+          find out -type d -name '__next.*' | while read -r d; do
+            parent=$(dirname "$d"); base=$(basename "$d")
+            for f in "$d"/*; do
+              cp "$f" "$parent/$base.$(basename "$f")"
+            done
+          done
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
